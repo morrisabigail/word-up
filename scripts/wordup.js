@@ -106,17 +106,21 @@ function checkIfWordIsReal(word) {
 /**
  * Updates everything on screen based on the current state of the model
  */
+$(document).ready(function(){
+  $('#new-game-button').click(function(){
+    startGame();
+    render()});
+
+  });
+
 function render() {
 
     // PREGAME ---------------------------------
 
     // update the score on the scoreboard
     $("#current-score").text(currentScore());
-
-    // TODO 2
+    $("#time-remaining").text(model.secondsRemaining);
     // Update the curent time remaining on the scoreboard.
-
-
     // if the game has not started yet, just hide the #game container and exit
     if (model.gameHasStarted == false) {
         $("#game").hide();
@@ -136,7 +140,7 @@ function render() {
     $("#game").show();
 
     // render the letter tiles
-    var letterChips = model.allowedLetters.map(letterChip)
+    var letterChips = model.allowedLetters.map(letterChip);
     $("#allowed-letters").append(letterChips);
 
     // TODO 11
@@ -144,8 +148,7 @@ function render() {
 
 
     // Set the value of the textbox
-    $("#textbox").val(model.currentAttempt);
-    // TODO 3
+    $("#textbox").val(model.currentAttempt).focus();
     // Give focus to the textbox.
 
 
@@ -157,8 +160,7 @@ function render() {
 
         // show the disallowed letters underneath
         var redLetterChips = disallowedLetters.map(disallowedLetterChip);
-
-        // TODO 8
+        $("#word-attempt-form").append(redLetterChips);
         // append the red letter chips to the form
 
     }
@@ -166,10 +168,13 @@ function render() {
     // if the game is over
     var gameOver = model.secondsRemaining <= 0
     if (gameOver) {
-        // TODO 9
+      $("#textbox").prop("disabled",true).val("");
+      
         // disable the text box and clear its contents
 
+
     }
+
 }
 
 
@@ -236,13 +241,14 @@ $(document).ready(function() {
         // start the game and re-render
         startGame();
         render();
+      });
+    $("#textbox").on("input",function(){
+      model.currentAttempt= $("#textbox").val();
     });
 
-    // TODO 6
     // Add another event handler with a callback function.
     // When the textbox content changes,
     // update the .currentAttempt property of the model and re-render
-
 
     // when the form is submitted
     $("#word-attempt-form").submit(function(evt) {
@@ -276,12 +282,13 @@ var scrabblePointsForEachLetter = {
  * Given a letter, checks whether that letter is "disallowed"
  * meaning it is not a member of the .allowedLetters list from the current model
  */
-function isDisallowedLetter(letter) {
-    // TODO 7
-    // This should return true if the letter is not an element of
-    // the .allowedLetters list in the model
-    return false;
-}
+function isDisallowedLetter(letter){
+  return model.allowedLetters.indexOf(letter) === -1;
+  }
+  // This should return true if the letter is not an element of
+  // the .allowedLetters list in the model
+
+
 
 /**
  * Given a word, returns a list of all the disallowed letters in that word
