@@ -57,7 +57,6 @@ function addNewWordSubmission(word) {
         alreadyUsed = true;
       }})
 
-
     // if the word is valid and hasn't already been used, add it
     if (containsOnlyAllowedLetters(word) && alreadyUsed == false) {
         model.wordSubmissions.push({word:word});
@@ -88,8 +87,6 @@ function checkIfWordIsReal(word) {
             model.wordSubmissions.forEach(function(wordSubmission){
               if(wordSubmission.word === word){
                 wordSubmission.isRealWord = theAnswer;
-
-
             }});
 
             // Update the corresponding wordSubmission in the model
