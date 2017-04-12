@@ -51,9 +51,12 @@ function endGame() {
  */
 function addNewWordSubmission(word) {
     // Do we already have a wordSubmission with this word?
-    // TODO 21
-    // replace the hardcoded 'false' with the real answer
-    var alreadyUsed = false;
+    var alreadyUsed=false;
+    model.wordSubmissions.forEach(function(wordSubmission){
+      if(wordSubmission.word === word ){
+        alreadyUsed = true;
+      }})
+
 
     // if the word is valid and hasn't already been used, add it
     if (containsOnlyAllowedLetters(word) && alreadyUsed == false) {
@@ -85,7 +88,7 @@ function checkIfWordIsReal(word) {
             model.wordSubmissions.forEach(function(wordSubmission){
               if(wordSubmission.word === word){
                 wordSubmission.isRealWord = theAnswer;
-                console.log("theAnswer:" +theAnswer)
+
 
             }});
 
@@ -330,13 +333,8 @@ function letterScore(letter) {
 function wordScore(word) {
     // split the word into a list of letters
     var letters = word.split("");
-    var letterScores = [];
-    // TODO 19
-    // Replace the empty list below.
+    var letterScores = letters.map(letterScore);
     // Map the list of letters into a list of scores, one for each letter.
-    letters.map(letterScore.push(letterScores));
-
-
     // return the total sum of the letter scores
     return letterScores.reduce(add, 0);
 }
@@ -356,10 +354,9 @@ function currentScore() {
             return 0;
         }
     });
-
-    // TODO 20
+    return wordScores.reduce(add,0);
     // return the total sum of the word scores
-    return 0;
+  return wordScores;
 }
 
 
